@@ -1,0 +1,1 @@
+samtools view -b -S result/testtrim.sam -o result/testtrim.bam

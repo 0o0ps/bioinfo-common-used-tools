@@ -1,0 +1,1 @@
+featureCounts -T 8 -p -t exon -g gene_id -a gencode.v22.annotation.gtf -o result/gene_rawcounts.txt result/testtrim.sort.bam

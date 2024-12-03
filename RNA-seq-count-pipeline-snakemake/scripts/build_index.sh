@@ -1,0 +1,1 @@
+hisat2-build -p 8 ../hg38.fa ../result/hg38
