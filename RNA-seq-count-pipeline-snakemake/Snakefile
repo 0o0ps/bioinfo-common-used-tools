@@ -4,7 +4,7 @@ with open("samples.txt") as f:
 
 rule all:
     input:
-        expand("data/processed/bam/Daping/{sample}.bam", sample=SAMPLES)
+        expand("data/processed/counts/Daping/{sample}_gene_rawcounts.txt", sample=SAMPLES)
 
 rule remove_adapter:
     '''
@@ -35,11 +35,44 @@ rule alignment:
         fq1 = "data/processed/AdapterRemoved/Daping-fastq/{sample}_1P.fastq",
         fq2 = "data/processed/AdapterRemoved/Daping-fastq/{sample}_2P.fastq"
     output:
-        bam = "data/processed/bam/Daping/{sample}.bam"
+        sam = "data/processed/sam/Daping/{sample}.sam"
     params:
         threads = "8"
     threads: 1
     shell:
-        "scripts/3alignment.sh {params.threads} {input.fq1} {input.fq2} {output.bam} "
+        "scripts/3alignment.sh {params.threads} {input.fq1} {input.fq2} {output.sam} "
 
-rule 
+rule sam2bam:
+    '''
+    sam2bam
+    '''
+    input:
+        sam = "data/processed/sam/Daping/{sample}.sam"
+    output:
+        bam = "data/processed/bam/Daping/{sample}.bam"
+    shell:
+        "scripts/4transfer_into_bam_file.sh {input.sam} {output.bam}"
+
+rule sort_bam:
+    '''
+    sort bam
+    '''
+    input:
+        bam = "data/processed/bam/Daping/{sample}.bam"
+    output:
+        sorted_bam = "data/processed/sorted_bam/Daping/{sample}.bam"
+    shell:
+        "scripts/5sort_bam.sh {input.bam} {output.sorted_bam}"
+
+rule bam2counts:
+    '''
+    bam2counts
+    '''
+    input:
+        bam = "data/processed/sorted_bam/Daping/{sample}.bam"
+    output:
+        counts = "data/processed/counts/Daping/{sample}_gene_rawcounts.txt"
+    params:
+        threads = "8"
+    shell:
+        "scripts/6bam2counts.sh {params.threads} {output.counts} {input.bam}"
