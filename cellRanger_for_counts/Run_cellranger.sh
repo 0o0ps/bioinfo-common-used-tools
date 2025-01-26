@@ -2,7 +2,7 @@
 cellranger count --id=$1 \
            --transcriptome=/mnt/public/wangxinkang/refdata-gex-GRCh38-2024-A \
            --sample=$1 \
-           --fastqs=/mnt/public/wangxinkang/projects/data/GC_IMC/scRNA/cancerdisPRJEB60680 \
+           --fastqs=/mnt/public/wangxinkang/projects/gse/cellranger_2nd/raw/$1 \
            --create-bam=true \
            --localcores=8 \
            --localmem=64 \
