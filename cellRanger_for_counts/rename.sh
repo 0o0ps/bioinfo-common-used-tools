@@ -7,3 +7,4 @@ rename 's/ERR(\d+)_R2/ERR$1_S1_L001_R2_001/' *.fastq.gz
 
 ## 生成sample_name.txt
 ls *.fastq.gz | sed 's/_.*//' | sort | uniq > Sample_name.txt
+# find . -type f -name "*.fastq.gz" | sed 's|^\./||' | cut -d'/' -f1 | sort | uniq > Sample_name.txt
